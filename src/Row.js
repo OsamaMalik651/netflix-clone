@@ -10,7 +10,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
   const [movies, setMovies] = useState([]);
   const [trailerUrl, setTrailerUrl] = useState("");
 
-  //A snippet of code which runs based on a specific ondition/variable
+  //A snippet of code which runs based on a specific condition/variable
   useEffect(() => {
     // if [], run once when the row loads, and don't run again
     async function fetchData() {
@@ -23,25 +23,24 @@ function Row({ title, fetchUrl, isLargeRow }) {
   }, [fetchUrl]);
   const opts = {
     height: "390",
-    width:"100%",
-    playerVars:{
-      autoplay:0,
+    width: "100%",
+    playerVars: {
+      autoplay: 0,
     },
   };
 
-  const handleClick = (movie) =>{
+  const handleClick = (movie) => {
     if (trailerUrl) {
-      setTrailerUrl('');
+      setTrailerUrl("");
     } else {
       movieTrailer(movie?.title || movie?.name || movie?.original_name || "")
-      .then((url)=>{
-        console.log(url);
-        const urlParams = new URLSearchParams(new URL(url).search);
-        setTrailerUrl(urlParams.get('v'));
-      })
-      .catch((error) => console.log(error));
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
     }
-  }
+  };
 
   return (
     <div className="row">
@@ -52,16 +51,17 @@ function Row({ title, fetchUrl, isLargeRow }) {
         {movies.map((movie) => (
           <img
             key={movie.id}
-            onClick ={() => handleClick(movie)}
+            onClick={() => handleClick(movie)}
             className={`row__poster ${isLargeRow && "row__posterLarge"}`}
-            src={`${base_url}${isLargeRow ? movie.poster_path : movie.backdrop_path
-              }`}
+            src={`${base_url}${
+              isLargeRow ? movie.poster_path : movie.backdrop_path
+            }`}
             alt={movie.name}
           />
         ))}
       </div>
-      {trailerUrl && <YouTube videoId={trailerUrl} opts={opts}/>
-  }  </div>
+      {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}{" "}
+    </div>
   );
 }
 
